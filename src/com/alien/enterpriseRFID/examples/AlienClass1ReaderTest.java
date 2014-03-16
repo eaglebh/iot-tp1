@@ -64,14 +64,16 @@ public AlienClass1ReaderTest() throws AlienReaderException {
   reader.open();
 
   long startTime = System.nanoTime();
-for(int k=0; k<10; ++k) {
+long readCount = 0;
+for(int k=0; k<100; ++k) {
 	
   // Ask the reader to read tags and print them
   Tag tagList[] = reader.getTagList();
   if (tagList == null) {
     System.out.println("No Tags Found");
   } else {
-    System.out.println("Tag(s) found:");
+    ++readCount;
+/*    System.out.println("Tag(s) found:");
     for (int i=0; i<tagList.length; i++) {
       Tag tag = tagList[i];
       System.out.println("ID:" + tag.getTagID() +
@@ -81,10 +83,12 @@ for(int k=0; k<10; ++k) {
                          ", Reads:" + tag.getRenewCount()
                          );
     }
+*/
   }
 }
 long endTime = System.nanoTime();
 System.out.println("\ntotal = "+(endTime - startTime));
+System.out.println("\nreads/second = "+ readCount / ((endTime - startTime)/1000000000.0));
   // Close the connection
   reader.close();
 }
