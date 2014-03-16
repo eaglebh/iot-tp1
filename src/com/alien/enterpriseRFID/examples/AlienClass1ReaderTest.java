@@ -39,69 +39,66 @@ import com.alien.enterpriseRFID.tags.*;
 
 /**
  * Connects to a Reader on COM port #1 and asks it to read tags.
- *
+ * 
  * @version 1.2 Feb 2004
  * @author David Krull
  */
 public class AlienClass1ReaderTest {
 
-/**
- * Constructor
- */
-public AlienClass1ReaderTest() throws AlienReaderException {
+	/**
+	 * Constructor
+	 */
+	public AlienClass1ReaderTest() throws AlienReaderException {
 
-  AlienClass1Reader reader = new AlienClass1Reader();
-  //reader.setConnection("COM1");
+		AlienClass1Reader reader = new AlienClass1Reader();
+		// reader.setConnection("COM1");
 
-  // To connect to a networked reader instead, use the following:
+		// To connect to a networked reader instead, use the following:
 
-  reader.setConnection("150.164.9.34", 23);
-  reader.setUsername("alien");
-  reader.setPassword("password");
- 
+		reader.setConnection("150.164.9.34", 23);
+		reader.setUsername("alien");
+		reader.setPassword("password");
 
-  // Open a connection to the reader
-  reader.open();
+		// Open a connection to the reader
+		reader.open();
 
-  long startTime = System.nanoTime();
-long readCount = 0;
-for(int k=0; k<100; ++k) {
-	
-  // Ask the reader to read tags and print them
-  Tag tagList[] = reader.getTagList();
-  if (tagList == null) {
-    System.out.println("No Tags Found");
-  } else {
-    ++readCount;
-/*    System.out.println("Tag(s) found:");
-    for (int i=0; i<tagList.length; i++) {
-      Tag tag = tagList[i];
-      System.out.println("ID:" + tag.getTagID() +
-                         ", Discovered:" + tag.getDiscoverTime() +
-                         ", Last Seen:" + tag.getRenewTime() +
-                         ", Antenna:" + tag.getAntenna() +
-                         ", Reads:" + tag.getRenewCount()
-                         );
-    }
-*/
-  }
-}
-long endTime = System.nanoTime();
-System.out.println("\ntotal = "+(endTime - startTime));
-System.out.println("\nreads/second = "+ readCount / ((endTime - startTime)/1000000000.0));
-  // Close the connection
-  reader.close();
-}
+		long startTime = System.nanoTime();
+		long readCount = 0;
+		for (int k = 0; k < 100; ++k) {
 
-/**
- * Main
- */
-public static final void main(String args[]){
-  try {
-    new AlienClass1ReaderTest();
-  } catch(AlienReaderException e) {
-    System.out.println("Error: " + e.toString());
-  }
-}
+			// Ask the reader to read tags and print them
+			Tag tagList[] = reader.getTagList();
+			if (tagList == null) {
+				System.out.println("No Tags Found");
+			} else {
+				++readCount;
+				/*
+				 * System.out.println("Tag(s) found:"); for (int i=0;
+				 * i<tagList.length; i++) { Tag tag = tagList[i];
+				 * System.out.println("ID:" + tag.getTagID() + ", Discovered:" +
+				 * tag.getDiscoverTime() + ", Last Seen:" + tag.getRenewTime() +
+				 * ", Antenna:" + tag.getAntenna() + ", Reads:" +
+				 * tag.getRenewCount() ); }
+				 */
+			}
+		}
+		long endTime = System.nanoTime();
+		System.out.println("\ntotal = " + (endTime - startTime));
+		System.out.println("\nreads/second = " + readCount
+				/ ((endTime - startTime) / 1000000000.0));
+		// Close the connection
+		reader.close();
+	}
+
+	/**
+	 * Main
+	 */
+	public static final void main(String args[]) {
+		try {
+			new AlienClass1ReaderTest();
+		} catch (AlienReaderException e) {
+			System.out.println("Error: " + e.toString());
+		}
+	}
 
 } // End of class AlienClass1ReaderTest
