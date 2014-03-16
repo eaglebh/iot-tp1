@@ -63,7 +63,9 @@ public AlienClass1ReaderTest() throws AlienReaderException {
   // Open a connection to the reader
   reader.open();
 
-for(int k=0; k<5; ++k) {
+  long startTime = System.nanoTime();
+for(int k=0; k<10; ++k) {
+	
   // Ask the reader to read tags and print them
   Tag tagList[] = reader.getTagList();
   if (tagList == null) {
@@ -81,6 +83,8 @@ for(int k=0; k<5; ++k) {
     }
   }
 }
+long endTime = System.nanoTime();
+System.out.println("\ntotal = "+(endTime - startTime));
   // Close the connection
   reader.close();
 }
