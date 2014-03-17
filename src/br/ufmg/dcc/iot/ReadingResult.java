@@ -1,34 +1,36 @@
 package br.ufmg.dcc.iot;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public class ReadingResult {
 
-	@Override
-	public String toString() {
-		return "ReadingResult [tagIds=" + tagIds.size() + ", noTagCount=" + noTagCount
-				+ ", elapsed=" + elapsed + "] " + "read rate = " + tagIds.size() / elapsed;
-	}
-
-	private List<String> tagIds = new ArrayList<String>();
+	private Set<String> tagIds = new HashSet<String>();
 	private long noTagCount;
+	private long readCount;
 	private double elapsed;
 
-	public List<String> getTagIds() {
-		return tagIds;
+	@Override
+	public String toString() {
+		return "ReadingResult [tagIds=" + readCount + ", noTagCount=" + noTagCount
+				+ ", elapsed=" + elapsed + "] " + "read rate = " + readCount / elapsed;
 	}
 
-	public void setTagIds(List<String> tagIds) {
-		this.tagIds = tagIds;
+	public void addTagId(String id) {
+		this.tagIds.add(id);
+		++readCount;
+	}
+
+	public void addReads(int count) {
+		readCount += count;
 	}
 	
-	public void add(String id) {
-		this.tagIds.add(id);
+	public void incReads() {
+		++readCount;
 	}
-
-	public void setNoTagCount(long noTagCount) {
-		this.noTagCount = noTagCount;
+	
+	public void incNoTagCount() {
+		++noTagCount;
 	}
 
 	public void setElapsed(double elapsed) {

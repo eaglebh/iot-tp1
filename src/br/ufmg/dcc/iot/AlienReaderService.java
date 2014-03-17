@@ -18,7 +18,6 @@ import com.alien.enterpriseRFID.tags.Tag;
 public class AlienReaderService implements ReaderService, MessageListener {
 
 	private AlienClass1Reader reader;
-	private long noTagCount;
 	private ReadingResult readingResult;
 
 	public AlienReaderService() {
@@ -35,21 +34,20 @@ public class AlienReaderService implements ReaderService, MessageListener {
 			reader.open();
 
 			long startTime = System.nanoTime();
-			noTagCount = 0;
 			for (int k = 0; k < tries; ++k) {
 				Tag tagList[] = reader.getTagList();
 				if (tagList == null) {
-					++noTagCount;
+					readingResult.incNoTagCount();
 				} else {
 					for (int i = 0; i < tagList.length; i++) {
 						Tag tag = tagList[i];
-						readingResult.add(tag.getTagID());
+						readingResult.addTagId(tag.getTagID());
+						readingResult.incReads();
 					}
 				}
 			}
 
 			long endTime = System.nanoTime();
-			readingResult.setNoTagCount(noTagCount);
 			readingResult.setElapsed((endTime - startTime) / 1000000000.0);
 
 			System.out.println(readingResult.toString());
@@ -80,7 +78,6 @@ public class AlienReaderService implements ReaderService, MessageListener {
 
 	public ReadingResult doAsyncReads(int timeoutInMillis) {
 		readingResult = new ReadingResult();
-		noTagCount = 0;
 		// Set up the message listener service
 		MessageListenerService service = new MessageListenerService(4000);
 		service.setMessageListener(this);
@@ -93,7 +90,6 @@ public class AlienReaderService implements ReaderService, MessageListener {
 
 		try {
 			reader.open();
-			System.out.println("Configuring Reader");
 
 			reader.setNotifyAddress(
 					InetAddress.getLocalHost().getHostAddress(),
@@ -118,7 +114,6 @@ public class AlienReaderService implements ReaderService, MessageListener {
 			readingResult
 					.setElapsed((System.currentTimeMillis() - startTime) / 1000.0);
 			// Reconnect to the reader and turn off AutoMode and TagStreamMode.
-			System.out.println("\nResetting Reader");
 			reader.open();
 			reader.autoModeReset();
 			reader.setNotifyMode(AlienClass1Reader.OFF);
@@ -146,11 +141,13 @@ public class AlienReaderService implements ReaderService, MessageListener {
 	 */
 	public void messageReceived(Message message) {
 		if (message.getTagCount() == 0) {
-			++noTagCount;
+			readingResult.incNoTagCount();
 		} else {
 			for (int i = 0; i < message.getTagCount(); i++) {
 				Tag tag = message.getTag(i);
-				readingResult.add(tag.getTagID());
+				tag.getRenewCount();
+				readingResult.addTagId(tag.getTagID());
+				readingResult.addReads(tag.getRenewCount());
 			}
 		}
 	}
