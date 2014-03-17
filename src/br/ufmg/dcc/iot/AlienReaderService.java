@@ -22,6 +22,7 @@ public class AlienReaderService implements ReaderService, MessageListener {
 	private ReadingResult readingResult;
 
 	public AlienReaderService() {
+		reader = new AlienClass1Reader();
 		reader.setConnection("150.164.9.34", 23);
 		reader.setUsername("alien");
 		reader.setPassword("password");
