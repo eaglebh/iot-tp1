@@ -4,10 +4,19 @@ public class Console {
 
 	public static void main(String[] args) {
 		ReaderService readerService = new AlienReaderService();
+
 		
-		readerService.doSyncReads(60);
-		
-		readerService.doAsyncReads(10000);
+		ReadingResult readingResult = readerService.doSyncReads(60);
+		System.out.println(readingResult.toString());
+		try {
+			Thread.sleep(10000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		readingResult = readerService.doAsyncReads(10000);
+		System.out.println(readingResult.toString());
+
 	}
 
 }
