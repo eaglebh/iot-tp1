@@ -1,6 +1,6 @@
 package br.ufmg.dcc.iot;
 
 public interface ReaderService {
-	ReadingResult doSyncReads(int timeout);
-	ReadingResult doAsyncReads(int timeout);	
+	ReadingResult doSyncReads(int tries);
+	ReadingResult doAsyncReads(int timeoutInMillis);	
 }
