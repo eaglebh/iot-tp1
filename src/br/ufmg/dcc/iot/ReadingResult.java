@@ -1,5 +1,6 @@
 package br.ufmg.dcc.iot;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ReadingResult {
@@ -10,7 +11,7 @@ public class ReadingResult {
 				+ ", elapsed=" + elapsed + "] " + "read rate = " + tagIds.size() / elapsed;
 	}
 
-	private List<String> tagIds;
+	private List<String> tagIds = new ArrayList<String>();
 	private long noTagCount;
 	private double elapsed;
 
